@@ -6,6 +6,7 @@ import { useState, useRef, FormEvent } from 'react';
 // Кастомные хуки
 import { useOutsideClicker } from './hooks/useOutsideClicker';
 import { useBodyScrollLock } from './hooks/useBodyScrollLock';
+import { useEscapeCloseSidebar } from './hooks/useEscapeCloseSidebar';
 
 import { ArrowButton } from 'src/ui/arrow-button';
 import { Button } from 'src/ui/button';
@@ -29,22 +30,22 @@ type ArticleParamsFormProps = {
 	setArticleState: (articleState: ArticleStateType) => void;
 };
 
-export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
-	const { articleState, setArticleState } = props;
-
+export const ArticleParamsForm = ({
+	articleState,
+	setArticleState,
+}: ArticleParamsFormProps) => {
 	const [isOpen, setIsOpen] = useState(false);
-
-	const toggleSidebar = () => {
-		setIsOpen((prevState) => !prevState);
-	};
-
 	const sidebarRef = useRef<HTMLDivElement>(null);
 
 	// Закрытие сайдбара при клике вне его области
 	useOutsideClicker({
 		onOutsideClick: () => setIsOpen(false),
 		ref: sidebarRef,
+		isActive: isOpen,
 	});
+
+	// Закрытие сайдбара по нажатию на Escape.
+	useEscapeCloseSidebar({ isOpen, setIsOpen });
 
 	// Блокировка скролла при открытом сайдбаре
 	useBodyScrollLock({ isLocked: isOpen });
@@ -57,6 +58,10 @@ export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
 		articleState.backgroundColor
 	);
 	const [contentWidth, setContentWidth] = useState(articleState.contentWidth);
+
+	const toggleSidebar = () => {
+		setIsOpen((prevState) => !prevState);
+	};
 
 	// Обработчик клика для кнопки "применить"
 	const handleFormStateApply = (event: FormEvent<HTMLFormElement>) => {
