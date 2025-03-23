@@ -3,9 +3,12 @@
 	left: 0;
 	width: 616px;
 	height: 100%;
-	overflow: scroll;
+	overflow-y: scroll;
+	overflow-x: auto;
 	transform: translate(-616px);
 	transition: transform 0.5s ease;
+	background-color: #fff;
+	border-right: 1px solid #000;
 }
 
 .container_open {
@@ -17,12 +20,13 @@
 	flex-shrink: 0;
 	flex-direction: column;
 	box-sizing: border-box;
-	width: 616px;
+	width: 100%;
 	height: auto;
 	min-height: 100%;
 	padding: 50px 31px;
-	background-color: #ffffff;
-	border-right: 1px solid #000000;
+	gap: 50px;
+	background-color: transparent;
+	border-right: 1px solid #000;
 }
 
 .bottomContainer {
